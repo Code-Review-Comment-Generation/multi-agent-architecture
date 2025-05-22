@@ -1,3 +1,4 @@
+# WITHOUT KNOWLEDGE TOOLS
 # from agno.models.openai import OpenAIChat
 # from agno.team.team import Team
 
@@ -30,6 +31,7 @@
 #     )
 
 
+# WITH KNOWLEDGE TOOLS
 from agno.models.openai import OpenAIChat
 from agno.team.team import Team
 

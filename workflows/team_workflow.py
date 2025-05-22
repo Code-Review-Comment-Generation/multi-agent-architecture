@@ -1,3 +1,4 @@
+# WITHOUT KNOWLEDGE TOOLS
 # import os
 # from typing import Iterator
 
@@ -63,6 +64,7 @@
 #         yield from self.reviewer_agent.run(analysis_report.content, stream=True)
 
 
+# WITH KNOWLEDGE TOOLS
 import os
 from typing import Iterator
 
