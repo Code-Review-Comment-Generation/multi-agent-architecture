@@ -1,11 +1,13 @@
 from agno.agent import Agent
 from agno.tools.googlesearch import GoogleSearchTools
-
+from agno.models.openai import OpenAIChat
+from config.settings import Config
 
 def create_reviewer_agent():
     """Creates and returns a code review comment writer agent"""
     return Agent(
-        tools=[GoogleSearchTools()],
+        model=OpenAIChat(id=Config.OPENAI_MODEL),
+        tools=[],
         description="Format and finalize code review comments based on specialist analysis.",
         instructions=[
             "You are a code review comment writer for GitHub pull requests.",

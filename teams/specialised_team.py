@@ -8,7 +8,7 @@
 #     return Team(
 #         name="Specialised Team",
 #         mode="route",
-#         model=OpenAIChat("gpt-4o"),
+#         model=OpenAIChat("gpt-4o-mini"),
 #         members=[
 #             bug_detector_agent,
 #             style_checker_agent,
@@ -34,7 +34,7 @@
 # WITH KNOWLEDGE TOOLS
 from agno.models.openai import OpenAIChat
 from agno.team.team import Team
-
+from config.settings import Config
 
 def create_specialised_team(
     bug_detector_agent, style_checker_agent, knowledge_tools=None
@@ -58,26 +58,29 @@ def create_specialised_team(
     return Team(
         name="Specialised Team",
         mode="route",
-        model=OpenAIChat("gpt-4o"),
+        model=OpenAIChat(id=Config.OPENAI_MODEL),
         members=[
             bug_detector_agent,
             style_checker_agent,
         ],
         tools=tools,  # Add the tools here
         instructions=[
-            "You are a code review team coordinator.",
-            "Your primary role is to analyze a codebase and route the analysis to the most appropriate specialist.",
-            "For potential bugs or logical issues, route to the Bug Detector.",
-            "For code style, formatting, or best practices issues, route to the Style Checker.",
-            "Use knowledge tools to enhance your analysis when necessary.",
-            "Choose only one specialist based on what aspect of the code needs the most attention.",
-            "Do not attempt to reach consensus - each specialist works independently on their assigned tasks.",
-            "Your goal is to ensure the most critical issues in the codebase are identified by the right specialist.",
+            "You are a code review team coordinator responsible for routing code analysis tasks to specialized experts.",
+            "When analyzing code, carefully consider:",
+            "- For bugs, security issues, or logical flaws -> Route to Bug Detector",
+            "- For style, readability, or best practices -> Route to Style Checker",
+            # "Leverage available knowledge tools to deepen your understanding of the codebase when needed.",
+            "Important guidelines:",
+            "- Select ONE specialist whose expertise best matches the code's most pressing needs",
+            "- Focus on critical issues that require immediate attention",
+            "- Let specialists work independently - do not seek consensus",
+            "- Provide clear context about why you chose that specialist",
+            "Success means efficiently matching code issues with the right expert reviewer.",
         ],
-        success_criteria="The codebase has been reviewed by the right specialist.",
+        # success_criteria="The codebase has been reviewed by the right specialist.",
         enable_agentic_context=True,
         show_tool_calls=True,
         markdown=True,
-        debug_mode=True,
+        debug_mode=Config.DEBUG,
         show_members_responses=True,
     )

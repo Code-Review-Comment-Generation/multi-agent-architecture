@@ -89,30 +89,35 @@ class TeamWorkflow(Workflow):
         "Review code using specialized agents to detect bugs and style issues, then format the feedback as GitHub review comments."
     )
 
-    def __init__(self, debug_mode=False, recreate_knowledge=False):
+    def __init__(self, file_path:str, debug_mode=False, recreate_knowledge=False):
         super().__init__(debug_mode=debug_mode)
+
+        # Set file path
+        self.file_path = file_path
 
         # Create agents
         self.bug_detector_agent = create_bug_detector_agent()
         self.style_checker_agent = create_style_checker_agent()
 
         # Create knowledge tools
-        self.knowledge_tools = create_knowledge_tools(recreate=recreate_knowledge)
+        # self.knowledge_tools = create_knowledge_tools(recreate=recreate_knowledge)
 
         # Create team with knowledge tools
         self.specialised_team = create_specialised_team(
-            self.bug_detector_agent, self.style_checker_agent, self.knowledge_tools
+            self.bug_detector_agent, 
+            self.style_checker_agent, 
+            # self.knowledge_tools
         )
 
         # Create reviewer agent
         self.reviewer_agent = create_reviewer_agent()
 
-    def fetch_codebase_content(self, file_path="text_analyzer_demo/main.py"):
+    def fetch_codebase_content(self):
         """
         Fetches the content of a file to be used as the codebase for review.
         This method wraps the utility function to allow for customization specific to this workflow.
         """
-        return fetch_codebase_content(file_path)
+        return fetch_codebase_content(self.file_path)
 
     def run(self) -> Iterator[RunResponse]:
         logger.info(f"Getting CodeBase to review.")

@@ -1,7 +1,7 @@
 import os
 
 from agno.utils.log import logger
-
+from config.settings import Config
 
 def fetch_codebase_content(file_path="text_analyzer_demo/main.py"):
     """
@@ -14,7 +14,7 @@ def fetch_codebase_content(file_path="text_analyzer_demo/main.py"):
         str: The content of the codebase to be reviewed
     """
     try:
-        with open(file_path, "r") as file:
+        with open(Config.REPO_PATH + "/" + file_path, "r") as file:
             content = file.read()
         return content
     except Exception as e:

@@ -8,3 +8,6 @@ python-dotenv
 lxml_html_clean
 lancedb
 tantivy
+matplotlib
+networkx
+pygraphviz
