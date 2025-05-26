@@ -1,25 +1,24 @@
-#llm/default_plugins/openai_models.py
+# llm/default_plugins/openai_models.py
 
-from llm import AsyncKeyModel, EmbeddingModel, KeyModel, hookimpl
+import datetime
+import json
+import os
+from enum import Enum
+from typing import AsyncGenerator, Iterable, Iterator, List, Optional, Union
+
+import click
+import httpx
 import llm
+import openai
+import yaml
+from llm import AsyncKeyModel, EmbeddingModel, KeyModel, hookimpl
 from llm.utils import (
     dicts_to_table_string,
-    remove_dict_none_values,
     logging_client,
+    remove_dict_none_values,
     simplify_usage_dict,
 )
-import click
-import datetime
-from enum import Enum
-import httpx
-import openai
-import os
-
-from pydantic import field_validator, Field
-
-from typing import AsyncGenerator, List, Iterable, Iterator, Optional, Union
-import json
-import yaml
+from pydantic import Field, field_validator
 
 
 @hookimpl

@@ -34,7 +34,9 @@
 # WITH KNOWLEDGE TOOLS
 from agno.models.openai import OpenAIChat
 from agno.team.team import Team
+
 from config.settings import Config
+
 
 def create_specialised_team(
     bug_detector_agent, style_checker_agent, knowledge_tools=None
@@ -64,6 +66,7 @@ def create_specialised_team(
             style_checker_agent,
         ],
         tools=tools,  # Add the tools here
+        reasoning=True,
         instructions=[
             "You are a code review team coordinator responsible for routing code analysis tasks to specialized experts.",
             "When analyzing code, carefully consider:",
