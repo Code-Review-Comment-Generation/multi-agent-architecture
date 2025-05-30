@@ -26,4 +26,6 @@ def create_reviewer_agent():
             "End with positive reinforcement and any overall improvement suggestions.",
             "Keep your tone professional but friendly - focus on improving the code, not criticizing the developer.",
         ],
+        debug_mode=True,
+        reasoning=False,
     )

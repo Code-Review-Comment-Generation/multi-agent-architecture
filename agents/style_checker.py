@@ -12,11 +12,12 @@ def create_style_checker_agent():
     return Agent(
         name="Style Checker",
         model=OpenAIChat(id=Config.OPENAI_MODEL),
-        reasoning=True,
+        reasoning=False,
         role="Check the style of the code",
         tools=[],
         show_tool_calls=True,
         add_name_to_instructions=True,
+        debug_mode=True,
         instructions=dedent(
             """
             You are a style checker who analyzes code for readability and best practices.

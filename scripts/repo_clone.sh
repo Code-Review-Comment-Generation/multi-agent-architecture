@@ -40,7 +40,7 @@ git fetch origin "pull/$PR/head:pr-$PR"
 git fetch origin
 
 # Get the base branch commit (the commit the PR was branched from)
-BASE_COMMIT=$(git merge-base origin/master "pr-$PR")
+BASE_COMMIT=$(git merge-base origin/main "pr-$PR")
 
 # Checkout the base commit
 git checkout "$BASE_COMMIT"

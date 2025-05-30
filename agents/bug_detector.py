@@ -14,10 +14,11 @@ def create_bug_detector_agent():
         name="Bug Detector",
         role="Find bugs in the code",
         model=OpenAIChat(id=Config.OPENAI_MODEL),
-        reasoning=True,
+        reasoning=False,
         tools=[get_function_implementation],
         show_tool_calls=True,
         add_name_to_instructions=True,
+        debug_mode=True,
         instructions=dedent(
             """
         You are a bug detector who analyzes code for potential issues.

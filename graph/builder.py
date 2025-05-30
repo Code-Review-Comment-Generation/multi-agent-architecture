@@ -1094,7 +1094,7 @@ class FunctionReferenceVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
 if __name__ == "__main__":
-    repo_path = "../sample_repo"
+    repo_path = "../scripts/django"
     # Create a default log directory if not provided
     # log_folder = "logs"
     repo_name = os.path.basename(repo_path)     
