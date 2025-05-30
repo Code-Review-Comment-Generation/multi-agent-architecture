@@ -9,7 +9,8 @@ if __name__ == "__main__":
     print("=" * 80)
 
     report = TeamWorkflow(
-        file_path="llm/default_plugins/openai_models.py",
+        # file_path="llm/default_plugins/openai_models.py",
+        file_path="pr-19479.patch",
         debug_mode=False,
         recreate_knowledge=True,
     ).run()

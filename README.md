@@ -5,4 +5,5 @@ Default Ubuntu procedure
 
 ## Running command:
 
+```python graphs/builder.py ```
 ```python main.py ```

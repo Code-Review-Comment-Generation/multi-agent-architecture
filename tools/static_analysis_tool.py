@@ -42,7 +42,7 @@ def run_pylint(file_path: str) -> str:
     # Go up one level to get to the project root (since this script is in tools/)
     project_root = os.path.dirname(current_dir)
     # Construct the full path to the file in sample_repo
-    full_file_path = os.path.join(project_root, "sample_repo", file_path)
+    full_file_path = os.path.join(project_root, "django", file_path)
     
     if not os.path.exists(full_file_path):
         return f"Error: File '{full_file_path}' not found. Please verify the file path and ensure the file exists in the repository."

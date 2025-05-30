@@ -9,8 +9,8 @@ load_dotenv(override=True)
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
-GRAPH_PATH = "graph/logs/sample_repo/repo_graph.json"
-REPO_PATH = "sample_repo"
+GRAPH_PATH = "graph/logs/django/repo_graph.json"
+REPO_PATH = "django"
 
 
 # You can add more configuration classes if needed

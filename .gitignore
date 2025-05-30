@@ -6,7 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# REMOVED FROM LOCAL PC
 django
+.env
+pr-19479.patch
 
 # Distribution / packaging
 .Python
