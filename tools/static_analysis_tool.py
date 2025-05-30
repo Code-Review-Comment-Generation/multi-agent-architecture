@@ -1,5 +1,6 @@
 import subprocess
 from typing import Any, Callable, Dict
+import os
 
 from agno.tools import tool
 
@@ -21,9 +22,9 @@ def logger_hook(function_name: str, function_call: Callable, arguments: Dict[str
     show_result=True,
     stop_after_tool_call=True,
     tool_hooks=[logger_hook],
-    cache_results=True,
-    cache_dir="/tmp/agno_cache",
-    cache_ttl=3600,
+    # cache_results=True,
+    # cache_dir="/tmp/agno_cache",
+    # cache_ttl=3600,
 )
 def run_pylint(file_path: str) -> str:
     """
@@ -36,10 +37,53 @@ def run_pylint(file_path: str) -> str:
         str: The result of the pylint run.
     """
 
-    pylint_output = subprocess.run(
-        ["pylint", file_path], capture_output=True, text=True
-    )
-    return pylint_output.stdout
+    # Get the absolute path to the current script's directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # Go up one level to get to the project root (since this script is in tools/)
+    project_root = os.path.dirname(current_dir)
+    # Construct the full path to the file in sample_repo
+    full_file_path = os.path.join(project_root, "sample_repo", file_path)
+    
+    if not os.path.exists(full_file_path):
+        return f"Error: File '{full_file_path}' not found. Please verify the file path and ensure the file exists in the repository."
+    
+    debug_file_path = os.path.join(project_root, "debug_full_file_path.txt")
+    with open(debug_file_path, "w") as debug_file:
+        debug_file.write(f"Input file_path: {file_path}\n")
+        debug_file.write(f"Current dir: {current_dir}\n")
+        debug_file.write(f"Project root: {project_root}\n")
+        debug_file.write(f"Full file path: {full_file_path}\n")
+        debug_file.write(f"File exists: {os.path.exists(full_file_path)}\n")
+    
+    try:
+        # Use pylint with basic flags to focus on style issues
+        pylint_output = subprocess.run(
+            ["pylint", "--errors-only", "--disable=import-error", full_file_path], 
+            capture_output=True, 
+            text=True
+        )
+        
+        # If no errors, run again for warnings and style issues
+        if pylint_output.returncode == 0:
+            pylint_output = subprocess.run(
+                ["pylint", "--disable=import-error,no-name-in-module", full_file_path], 
+                capture_output=True, 
+                text=True
+            )
+        
+        # Return both stdout and stderr to get complete pylint output
+        output = pylint_output.stdout
+        if pylint_output.stderr:
+            output += f"\nSTDERR: {pylint_output.stderr}"
+            
+        if not output.strip():
+            output = "Pylint completed successfully. No significant style issues found."
+            
+        return output
+    except FileNotFoundError:
+        return "Error: pylint command not found. Please ensure pylint is installed."
+    except Exception as e:
+        return f"Error running pylint: {str(e)}"
 
 
 ### flake8 tool

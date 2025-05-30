@@ -23,9 +23,9 @@ search_tools = SearchTools(Config.GRAPH_PATH)
     show_result=True,  # Show result after function call
     stop_after_tool_call=True,  # Return result immediately after tool call
     tool_hooks=[logger_hook],  # Hook to run before and after execution
-    cache_results=True,  # Enable caching of results
-    cache_dir="/tmp/agno_cache",  # Custom cache directory
-    cache_ttl=3600,  # Cache TTL in seconds (1 hour)
+    # cache_results=False,  # Enable caching of results
+    # cache_dir="/tmp/agno_cache",  # Custom cache directory
+    # cache_ttl=3600,  # Cache TTL in seconds (1 hour)
 )
 def get_function_implementation(file_path: str, function_name: str) -> str:
     """Get the source code implementation of an imported function from its original location.

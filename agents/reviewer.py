@@ -2,6 +2,7 @@ from agno.agent import Agent
 from agno.tools.googlesearch import GoogleSearchTools
 from agno.models.openai import OpenAIChat
 from config.settings import Config
+from textwrap import dedent
 
 def create_reviewer_agent():
     """Creates and returns a code review comment writer agent"""

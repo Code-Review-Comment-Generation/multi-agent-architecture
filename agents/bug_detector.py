@@ -14,10 +14,11 @@ def create_bug_detector_agent():
         name="Bug Detector",
         role="Find bugs in the code",
         model=OpenAIChat(id=Config.OPENAI_MODEL),
-        reasoning=True,
+        # reasoning=True,
         tools=[get_function_implementation],
         show_tool_calls=True,
         add_name_to_instructions=True,
+        debug_mode=Config.DEBUG,
         instructions=dedent(
             """
         You are a bug detector who analyzes code for potential issues.
@@ -30,6 +31,7 @@ def create_bug_detector_agent():
            - Where it occurs
            - Why it's a problem
            - How to fix it
+        4. Also give the exact correct name of the files and functions where the bug is found
 
         Tool Usage:
         - You have access to a function implementation lookup tool
@@ -41,4 +43,5 @@ def create_bug_detector_agent():
         Keep your analysis focused on actual bugs rather than style issues.
     """
         ),
+
     )
