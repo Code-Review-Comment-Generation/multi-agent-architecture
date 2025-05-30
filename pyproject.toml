@@ -1,0 +1,23 @@
+[project]
+name = ""
+version = "0.0.1"
+dependencies = [
+    "openai",
+    "agno",
+    "pydantic",
+    "sqlalchemy",
+    "googlesearch-python",
+    "pycountry",
+    "python-dotenv",
+    "lxml-html-clean",
+    "lancedb",
+    "tantivy",
+    "matplotlib",
+    "networkx",
+    "pygraphviz",
+    "pylint>=3.3.7",
+    "flake8>=7.2.0",
+]
+
+[tool.uv]
+package = false
