@@ -71,6 +71,12 @@ class SearchTools:
                 return edge
         return None
     
+    def get_node_reference_from_fqn(self, full_qualified_name: str) -> Optional[Node]:
+        for node in self.graph.nodes:
+            if node.id.endswith(full_qualified_name):
+                return node
+        return None
+    
 if __name__ == "__main__":
     search_tools = SearchTools("./logs/repo_graph.json")
     # print(search_tools.search_by_class_name("Tool"))

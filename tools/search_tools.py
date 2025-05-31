@@ -63,3 +63,71 @@ def get_function_implementation(file_path: str, function_name: str) -> str:
         node.loc.end_line,
     )
     return code
+
+# filepath::Class::method
+# @tool(
+#     name="get_function_implementation",  # Custom name for the tool
+#     description="Get source code implementation of an imported function",  # Custom description
+#     show_result=True,  # Show result after function call
+#     stop_after_tool_call=True,  # Return result immediately after tool call
+#     tool_hooks=[logger_hook],  # Hook to run before and after execution
+#     # cache_results=False,  # Enable caching of results
+#     # cache_dir="/tmp/agno_cache",  # Custom cache directory
+#     # cache_ttl=3600,  # Cache TTL in seconds (1 hour)
+# )
+
+def get_implementation(full_qualified_name: str) -> str:
+    """Get the source code implementation of a function, method or class using its fully qualified name.
+
+    This tool helps find and retrieve the actual implementation of any code element in your codebase
+    using its fully qualified name (FQN). The FQN format is: 
+    for class: filepath::Class
+    for method: filepath::Class::method
+    for function: filepath::function
+
+    FQN format can be gotten by seeing the import statement in the code.
+
+    Args:
+        full_qualified_name (str): The fully qualified name of the code element to find.
+            Format: "filepath::Class" or "filepath::Class::method"
+            Examples:
+            - "tools/search_tools.py::get_implementation"
+            - "graph/search.py::SearchTools::get_node_reference"
+            - "config/settings.py::Config"
+
+    Returns:
+        str: The source code implementation of the requested code element from its original location.
+             If the element is not found, returns an error message.
+
+    Examples:
+        # Get implementation of a standalone function
+        import format: from tools.search_tools import get_implementation
+        get_implementation("tools/search_tools.py::get_implementation")
+
+        # Get implementation of a class method
+        import format: from graph.search import SearchTools
+        get_implementation("graph/search.py::SearchTools::get_node_reference")
+
+        # Get implementation of a class
+        import format: from config.settings import Config
+        get_implementation("config/settings.py::Config")
+
+    Notes:
+        - The filepath should be relative to the project root
+        - For standalone functions, use format: "filepath::function_name"
+        - For class methods, use format: "filepath::Class::method"
+        - For classes, use format: "filepath::Class"
+    """
+    print(f"Fully qualified name: {full_qualified_name}")
+    node = search_tools.get_node_reference_from_fqn(full_qualified_name)
+
+    if not node:
+        print("Node not found")
+        return f"Could not find implementation for '{full_qualified_name}'"
+
+    code = search_tools.get_code_snippet(
+        Config.REPO_PATH + "/" + node.loc.file_name,
+        node.loc.start_line,
+        node.loc.end_line,
+    )
+    return code

@@ -1,6 +1,7 @@
 [project]
-name = ""
+name = "multi-agent-architecture"
 version = "0.0.1"
+requires-python = ">=3.11"
 dependencies = [
     "openai",
     "agno",
@@ -19,5 +20,5 @@ dependencies = [
     "flake8>=7.2.0",
 ]
 
-[tool.uv]
-package = false
+[tool.setuptools]
+packages = ["graph", "config"]
