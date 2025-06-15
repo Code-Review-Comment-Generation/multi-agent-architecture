@@ -1,0 +1,51 @@
+diff --git a/django/db/backends/utils.py b/django/db/backends/utils.py
+index 568f510a67..ae810ffd12 100644
+--- a/django/db/backends/utils.py
++++ b/django/db/backends/utils.py
+@@ -10,6 +10,7 @@ from hashlib import md5
+ from django.apps import apps
+ from django.db import NotSupportedError
+ from django.utils.dateparse import parse_time
++from django.utils.functional import lazy
+ 
+ logger = logging.getLogger("django.db.backends")
+ 
+@@ -151,7 +152,7 @@ class CursorDebugWrapper(CursorWrapper):
+             logger.debug(
+                 "(%.3f) %s; args=%s; alias=%s",
+                 duration,
+-                self.db.ops.format_debug_sql(sql),
++                lazy(self.db.ops.format_debug_sql)(sql),
+                 params,
+                 self.db.alias,
+                 extra={
+diff --git a/tests/backends/tests.py b/tests/backends/tests.py
+index 0e5348e248..7958363ed5 100644
+--- a/tests/backends/tests.py
++++ b/tests/backends/tests.py
+@@ -85,7 +85,10 @@ class LastExecutedQueryTest(TestCase):
+     def test_debug_sql(self):
+         qs = Reporter.objects.filter(first_name="test")
+         ops = connections[qs.db].ops
+-        with mock.patch.object(ops, "format_debug_sql") as format_debug_sql:
++        with (
++            self.assertLogs("django.db.backends", "DEBUG"),
++            mock.patch.object(ops, "format_debug_sql") as format_debug_sql,
++        ):
+             list(qs)
+         # Queries are formatted with DatabaseOperations.format_debug_sql().
+         format_debug_sql.assert_called()
+@@ -93,6 +96,13 @@ class LastExecutedQueryTest(TestCase):
+         self.assertIn("select", sql)
+         self.assertIn(Reporter._meta.db_table, sql)
+ 
++    def test_debug_sql_logging_disabled(self):
++        qs = Reporter.objects.filter(first_name="test")
++        ops = connections[qs.db].ops
++        with mock.patch.object(ops, "format_debug_sql") as format_debug_sql:
++            list(qs)
++        format_debug_sql.assert_not_called()
++
+     def test_query_encoding(self):
+         """last_executed_query() returns a string."""
+         data = RawData.objects.filter(raw_data=b"\x00\x46  \xfe").extra(

@@ -1,0 +1,5 @@
+Input file_path: tests/backends/tests.py
+Current dir: /media/nafiu/My Files/multi-agent-architecture/tools
+Project root: /media/nafiu/My Files/multi-agent-architecture
+Full file path: /media/nafiu/My Files/multi-agent-architecture/django/tests/backends/tests.py
+File exists: True
